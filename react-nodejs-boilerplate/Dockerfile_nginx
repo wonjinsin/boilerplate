@@ -1,0 +1,10 @@
+FROM nginx
+
+ADD ./nginx_conf/nginx.conf /etc/nginx
+ADD ./nginx_conf/dummy_front.conf /etc/nginx/conf.d
+RUN mkdir -p /static || true
+RUN chown -R nginx:nginx /static
+ADD ./client/build /static
+RUN rm /etc/nginx/conf.d/default.conf || true
+
+CMD ["nginx", "-g", "daemon off;"]

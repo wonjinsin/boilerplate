@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@client/*": ["./src/client/*"],
+      "@actions/*": ["./src/client/actions/*"],
+      "@api/*": ["./src/client/api/*"],
+      "@axios/*": ["./src/client/axios/*"],
+      "@components/*": ["./src/client/components/*"],
+      "@constants/*": ["./src/client/constants/*"],
+      "@containers/*": ["./src/client/containers/*"],
+      "@functions/*": ["./src/client/functions/*"],
+      "@reducers/*": ["./src/client/reducers/*"],
+      "@responses/*": ["./src/client/responses/*"],
+      "@utils/*": ["./src/client/utils/*"],
+      "@routes/*": ["./src/client/routes/*"],
+      "@stores/*": ["./src/client/stores/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@js/*": ["./src/styles/js/*"],
+      "@css/*": ["./src/styles/css/*"]
+    }
+  },
+  "include": ["src", "craco.config.js"],
+  "exclude": ["node_modules", "**/node_modules/*"]
+}

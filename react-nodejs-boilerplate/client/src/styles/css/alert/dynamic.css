@@ -1,0 +1,2 @@
+body .alertModalInner span.failed{background:url("src/assets/icons/img-correct-fail.png"); background-size: 60px 61px;}
+body .alertModalInner span.question{background:url("src/assets/icons/img-correct-question.png"); background-size: 60px 61px;}

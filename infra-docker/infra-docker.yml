@@ -1,0 +1,36 @@
+version: "3"
+services:
+  mariadb:
+    container_name: dummy_mariadb
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: dummypass
+      MYSQL_DATABASE: dummydata
+      MYSQL_USER: dummyuser
+      MYSQL_PASSWORD: dummypass
+    ports:
+      - 33306:3306
+
+  redis:
+    container_name: dummy_redis
+    image: redis:latest
+    ports:
+      - "36379:6379"
+    healthcheck:
+      test: "redis-cli -h 127.0.0.1 ping"
+      interval: 3s
+      timeout: 1s
+      retries: 5
+
+  redis-commander:
+    container_name: dummy_redis_commander
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=redis_store:redis:6379
+    ports:
+      - "38081:8081"
+
+networks:
+  default:
+    external:
+      name: dummy_network
