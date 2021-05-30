@@ -1,0 +1,15 @@
+export default {
+  whiteColor: "#ffffff",
+  blackColor: "#2d2d2d",
+  greyColor: "#aaaaaa",
+  superLightGreyColor: "#dadada",
+  lightGreyColor: "#999999",
+  darkGreyColor: "#777777",
+  bottomGreyColor: "#eeeeee",
+  redColor: "#fc3e6b",
+  blueColor: "#5885ff",
+  darkBlueColor: "#003569",
+  greenColor: "#79f548",
+  darkRedColor: "#ff0000",
+  normalColor: "#007bff",
+};

@@ -1,0 +1,6 @@
+module Pods_rn_setting_wonjinsin_rn_setting_wonjinsinTests {
+  umbrella header "Pods-rn_setting_wonjinsin-rn_setting_wonjinsinTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

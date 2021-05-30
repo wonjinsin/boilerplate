@@ -1,0 +1,6 @@
+module Pods_rn_setting_wonjinsin {
+  umbrella header "Pods-rn_setting_wonjinsin-umbrella.h"
+
+  export *
+  module * { export * }
+}
