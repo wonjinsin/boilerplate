@@ -1,0 +1,4 @@
+
+// UserRepository ...
+type UserRepository interface {
+}
