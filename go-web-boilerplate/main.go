@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"pikachu/repository"
+	"pikachu/router"
 	"pikachu/service"
 
 	"github.com/labstack/echo"

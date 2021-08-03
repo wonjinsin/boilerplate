@@ -8,14 +8,14 @@ import (
 
 // Service ...
 type Service struct {
-	user UserService
+	User UserService
 }
 
 // Init ...
 func Init(repo *repository.Repository) (*Service, error) {
 	userSvc := NewUserService(repo.User)
 
-	return &Service{user: userSvc}, nil
+	return &Service{User: userSvc}, nil
 }
 
 // UserService ...
