@@ -11,13 +11,13 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Pikachu ...
+var Pikachu *ViperConfig
+
 // ViperConfig ...
 type ViperConfig struct {
 	*viper.Viper
 }
-
-// Pikachu ...
-var Pikachu *ViperConfig
 
 func init() {
 	Pikachu = initViperConfig()
@@ -54,9 +54,7 @@ func initViperConfig() *ViperConfig {
 		v.Set("absPath", getRootDir())
 	}
 
-	return &ViperConfig{
-		Viper: v,
-	}
+	return &ViperConfig{v}
 }
 
 func getRootDir() string {
