@@ -1,10 +1,23 @@
 package service
 
 import (
+	"log"
+	"os"
 	"pikachu/repository"
+	"pikachu/util"
 
 	"pikachu/model"
 )
+
+var zlog *util.Logger
+
+func init() {
+	zlog, err := util.NewLogger()
+	if err != nil {
+		log.Fatalf("InitLog module[service] err[%s]", err.Error())
+		os.Exit(1)
+	}
+}
 
 // Service ...
 type Service struct {

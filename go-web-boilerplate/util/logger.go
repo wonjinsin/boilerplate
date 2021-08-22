@@ -1,12 +1,11 @@
 package util
 
 import (
+	"context"
 	"encoding/json"
-	"path/filepath"
 
 	"github.com/juju/errors"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
 // Logger ...
@@ -14,8 +13,17 @@ type Logger struct {
 	*zap.SugaredLogger
 }
 
-func MyCaller(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(filepath.Base(caller.FullPath()))
+// With ...
+func (z *Logger) With(ctx context.Context) *zap.SugaredLogger {
+	if ctx == nil {
+		return z.SugaredLogger
+	}
+	trid, ok := ctx.Value(TRID).(string)
+	if !ok || trid == "" {
+		return z.SugaredLogger
+	}
+
+	return z.SugaredLogger.Named(trid)
 }
 
 // NewLogger ...

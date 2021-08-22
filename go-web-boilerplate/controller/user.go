@@ -20,6 +20,6 @@ func NewUserController(userSvc service.UserService, userRepo repository.UserRepo
 	}
 }
 
-func (u *user) GetUser(c echo.Context) (err error) {
+func (u *user) NewUser(c echo.Context) (err error) {
 	return nil
 }

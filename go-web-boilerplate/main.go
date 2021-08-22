@@ -19,7 +19,7 @@ var zlog *util.Logger
 func init() {
 	zlog, err := util.NewLogger()
 	if err != nil {
-		log.Fatalf("Error util InitLog module[main] err[%s]", err.Error())
+		log.Fatalf("InitLog module[main] err[%s]", err.Error())
 		os.Exit(1)
 	}
 
