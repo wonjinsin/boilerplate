@@ -7,11 +7,12 @@ import (
 	"time"
 )
 
-type customStr string
+// CustomStr ...
+type CustomStr string
 
 // CustomStrs ...
 const (
-	TRID customStr = "trid"
+	TRID CustomStr = "trid"
 )
 
 // GetTRID ...

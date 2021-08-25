@@ -16,6 +16,6 @@ func NewUserService(userRepo repository.UserRepository) UserService {
 	}
 }
 
-func (u *userUsecase) NewUser() *model.User {
-	return &model.User{}
+func (u *userUsecase) NewUser(user *model.User) *model.User {
+	return user
 }

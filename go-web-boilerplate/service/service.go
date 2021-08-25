@@ -33,5 +33,5 @@ func Init(repo *repository.Repository) (*Service, error) {
 
 // UserService ...
 type UserService interface {
-	NewUser() *model.User
+	NewUser(user *model.User) *model.User
 }
