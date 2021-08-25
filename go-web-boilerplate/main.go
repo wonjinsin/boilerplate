@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"pikachu/config"
+	"pikachu/middleware"
 	"pikachu/repository"
 	"pikachu/router"
 	"pikachu/service"
@@ -17,7 +18,8 @@ import (
 var zlog *util.Logger
 
 func init() {
-	zlog, err := util.NewLogger()
+	var err error
+	zlog, err = util.NewLogger()
 	if err != nil {
 		log.Fatalf("InitLog module[main] err[%s]", err.Error())
 		os.Exit(1)
@@ -30,6 +32,8 @@ func init() {
 func main() {
 	pikachu := config.Pikachu
 	e := echo.New()
+	e.Use(middleware.SetTRID())
+	e.Use(middleware.RequestLogger(zlog))
 	e.HideBanner = true
 
 	repo, err := repository.Init(pikachu)

@@ -21,5 +21,7 @@ func NewUserController(userSvc service.UserService, userRepo repository.UserRepo
 }
 
 func (u *user) NewUser(c echo.Context) (err error) {
+	ctx := c.Request().Context()
+	zlog.With(ctx).Infow("test")
 	return nil
 }

@@ -8,6 +8,8 @@ import (
 	"go.uber.org/zap"
 )
 
+var zLog *Logger
+
 // Logger ...
 type Logger struct {
 	*zap.SugaredLogger
@@ -56,7 +58,7 @@ func NewLogger() (*Logger, error) {
 	}
 
 	defer logger.Sync()
-	sugar := logger.Sugar()
+	zLog = &Logger{logger.Sugar()}
 
-	return &Logger{sugar}, nil
+	return zLog, nil
 }
