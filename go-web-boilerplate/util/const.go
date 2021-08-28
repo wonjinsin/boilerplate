@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+// Const ...
+const (
+	DBCharsetOption string = "DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci"
+)
+
 // CustomStr ...
 type CustomStr string
 

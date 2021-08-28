@@ -1,14 +1,61 @@
 package repository
 
 import (
+	"context"
 	"fmt"
+	"log"
+	"os"
+	"time"
 
 	"pikachu/config"
 	"pikachu/model"
+	"pikachu/util"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
+
+var zlog *util.Logger
+
+type dbLogger struct {
+	*util.Logger
+}
+
+func (dl *dbLogger) LogMode(l logger.LogLevel) logger.Interface {
+	return dl
+}
+
+func (dl *dbLogger) Info(ctx context.Context, msg string, data ...interface{}) {
+	dl.Logger.With(ctx).Info(msg, data)
+}
+
+func (dl *dbLogger) Warn(ctx context.Context, msg string, data ...interface{}) {
+	dl.Logger.With(ctx).Warn(msg, data)
+}
+
+func (dl *dbLogger) Error(ctx context.Context, msg string, data ...interface{}) {
+	dl.Logger.With(ctx).Error(msg, data)
+}
+
+func (dl *dbLogger) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
+	elapsed := time.Since(begin)
+	sql, rows := fc()
+	if err != nil {
+		dl.Logger.With(ctx).Infow(err.Error(), "elapsed", fmt.Sprintf("%.3fms", float64(elapsed.Nanoseconds())/1e6), "rows", rows, "sql", sql)
+	} else {
+		dl.Logger.With(ctx).Infow("", "elapsed", fmt.Sprintf("%.3fms", float64(elapsed.Nanoseconds())/1e6), "rows", rows, "sql", sql)
+	}
+}
+
+func init() {
+	var err error
+	zlog, err = util.NewLogger()
+	if err != nil {
+		log.Fatalf("InitLog module[service] err[%s]", err.Error())
+		os.Exit(1)
+	}
+}
 
 // Repository ...
 type Repository struct {
@@ -18,7 +65,6 @@ type Repository struct {
 // Init ...
 func Init(pikachu *config.ViperConfig) (*Repository, error) {
 	mysqlConn, err := mysqlConnect(pikachu)
-
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +92,19 @@ func getDialector(pikachu *config.ViperConfig) gorm.Dialector {
 	return mysql.Open(dbURI)
 }
 
+func getConfig(pikachu *config.ViperConfig) (gConfig *gorm.Config) {
+	dbLogger := &dbLogger{zlog}
+	gConfig = &gorm.Config{
+		Logger:                                   dbLogger,
+		PrepareStmt:                              true,
+		SkipDefaultTransaction:                   true,
+		DisableForeignKeyConstraintWhenMigrating: true,
+	}
+
+	return gConfig
+}
+
 // UserRepository ...
 type UserRepository interface {
-	NewUser() *model.User
+	NewUser(ctx context.Context, user *model.User) (ruser *model.User, err error)
 }

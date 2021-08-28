@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"log"
 	"os"
 	"pikachu/repository"
@@ -12,7 +13,8 @@ import (
 var zlog *util.Logger
 
 func init() {
-	_, err := util.NewLogger()
+	var err error
+	zlog, err = util.NewLogger()
 	if err != nil {
 		log.Fatalf("InitLog module[service] err[%s]", err.Error())
 		os.Exit(1)
@@ -27,11 +29,10 @@ type Service struct {
 // Init ...
 func Init(repo *repository.Repository) (*Service, error) {
 	userSvc := NewUserService(repo.User)
-
 	return &Service{User: userSvc}, nil
 }
 
 // UserService ...
 type UserService interface {
-	NewUser(user *model.User) *model.User
+	NewUser(ctx context.Context, user *model.User) (ruser *model.User, err error)
 }
