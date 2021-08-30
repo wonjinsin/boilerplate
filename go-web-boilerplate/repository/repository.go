@@ -107,4 +107,5 @@ func getConfig(pikachu *config.ViperConfig) (gConfig *gorm.Config) {
 // UserRepository ...
 type UserRepository interface {
 	NewUser(ctx context.Context, user *model.User) (ruser *model.User, err error)
+	GetUser(ctx context.Context, uid string) (ruser *model.User, err error)
 }

@@ -35,4 +35,5 @@ func Init(repo *repository.Repository) (*Service, error) {
 // UserService ...
 type UserService interface {
 	NewUser(ctx context.Context, user *model.User) (ruser *model.User, err error)
+	GetUser(ctx context.Context, id string) (ruser *model.User, err error)
 }

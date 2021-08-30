@@ -36,3 +36,20 @@ func (g *gormUserRepository) NewUser(ctx context.Context, user *model.User) (rus
 
 	return user, nil
 }
+
+// GetUser ...
+func (g *gormUserRepository) GetUser(ctx context.Context, uid string) (ruser *model.User, err error) {
+	zlog.With(ctx).Infow("[New Repository Service]", "uid", uid)
+
+	scope := g.Conn.WithContext(ctx)
+	scope = scope.Where("users.uid = ?", uid).Find(&ruser)
+	if err = scope.Error; err != nil {
+		zlog.With(ctx).Errorw("Find User", "uid", uid, "err", err)
+		return nil, err
+	}
+	if scope.RowsAffected == 0 {
+		return ruser, nil
+	}
+
+	return ruser, nil
+}
