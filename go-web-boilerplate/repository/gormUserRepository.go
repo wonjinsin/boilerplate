@@ -5,6 +5,7 @@ import (
 	"pikachu/model"
 	"pikachu/util"
 
+	"github.com/juju/errors"
 	"gorm.io/gorm"
 )
 
@@ -48,7 +49,7 @@ func (g *gormUserRepository) GetUser(ctx context.Context, uid string) (ruser *mo
 		return nil, err
 	}
 	if scope.RowsAffected == 0 {
-		return ruser, nil
+		return nil, errors.UserNotFoundf("User is not exist")
 	}
 
 	return ruser, nil

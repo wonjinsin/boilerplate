@@ -9,7 +9,7 @@ import (
 )
 
 // Init ...
-func Init(e *echo.Echo, repo *repository.Repository, svc *service.Service) {
+func Init(e *echo.Echo, svc *service.Service, repo *repository.Repository) {
 	// Default Group
 	api := e.Group("/api")
 	ver := api.Group("/v1")
@@ -19,4 +19,6 @@ func Init(e *echo.Echo, repo *repository.Repository, svc *service.Service) {
 	userCt := ct.NewUserController(svc.User, repo.User)
 	user.POST("", userCt.NewUser)
 	user.GET("/:uid", userCt.GetUser)
+	user.PUT("/:uid", userCt.UpdateUser)
+	user.DELETE("/:uid", userCt.DeleteUser)
 }

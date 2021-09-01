@@ -27,9 +27,8 @@ func init() {
 	}
 }
 
-func response(c echo.Context, code int, resultMsg string, resultData ...interface{}) error {
+func response(c echo.Context, code int, resultMsg string, result ...interface{}) error {
 	strCode := strconv.Itoa(code)
-
 	trid, ok := c.Request().Context().Value(util.TRID).(string)
 	if !ok {
 		trid = util.GetTRID()
@@ -39,8 +38,19 @@ func response(c echo.Context, code int, resultMsg string, resultData ...interfac
 		TRID:       trid,
 		ResultCode: strCode,
 		ResultMsg:  resultMsg,
-		ResultData: resultData,
+	}
+
+	if result != nil {
+		res.ResultData = result[0]
 	}
 
 	return c.JSON(code, res)
+}
+
+// UserController ...
+type UserController interface {
+	NewUser(c echo.Context) (err error)
+	GetUser(c echo.Context) (err error)
+	UpdateUser(c echo.Context) (err error)
+	DeleteUser(c echo.Context) (err error)
 }

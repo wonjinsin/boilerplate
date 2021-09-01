@@ -48,7 +48,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	router.Init(e, repo, svc)
+	router.Init(e, svc, repo)
 
 	e.Logger.Fatal(e.Start(":33333"))
 }
