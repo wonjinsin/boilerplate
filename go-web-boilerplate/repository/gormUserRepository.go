@@ -54,3 +54,13 @@ func (g *gormUserRepository) GetUser(ctx context.Context, uid string) (ruser *mo
 
 	return ruser, nil
 }
+
+// UpdateUser ...
+func (g *gormUserRepository) UpdateUser(ctx context.Context, user *model.User) (ruser *model.User, err error) {
+	return nil, nil
+}
+
+// DeleteUser ...
+func (g *gormUserRepository) DeleteUser(ctx context.Context, uid string) (err error) {
+	return nil
+}

@@ -24,3 +24,9 @@ func (u *User) ValidateNewUser() bool {
 func (u *User) ValidateUpdateUser() bool {
 	return true
 }
+
+// UpdateUser ...
+func (u *User) UpdateUser(user *User) *User {
+	u = user
+	return u
+}

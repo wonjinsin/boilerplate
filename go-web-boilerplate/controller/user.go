@@ -75,12 +75,8 @@ func (u *User) UpdateUser(c echo.Context) (err error) {
 	if err := c.Bind(user); err != nil {
 		zlog.With(ctx).Warnw("Bind error", "user", user, "err", err)
 		return response(c, http.StatusBadRequest, "Bind error")
-	} else if !user.ValidateUpdateUser() {
-		zlog.With(ctx).Warnw("NewUser ValidateUpdateUser failed", "user", user)
-		return response(c, http.StatusBadRequest, "ValidateUpdateUser failed")
 	}
-
-	if user, err = u.userSvc.UpdateUser(ctx, user); err != nil {
+	if user, err = u.userSvc.UpdateUser(ctx, uid, user); err != nil {
 		zlog.With(ctx).Errorw("UserSvc NewUser failed", "user", user, "err", err)
 		return response(c, http.StatusInternalServerError, "UpdateUser failed")
 	}
