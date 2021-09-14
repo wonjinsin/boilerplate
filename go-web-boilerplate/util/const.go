@@ -20,6 +20,11 @@ const (
 	TRID CustomStr = "trid"
 )
 
+// CustomTimes ...
+const (
+	CtxTimeOut = time.Second * 10
+)
+
 // GetTRID ...
 func GetTRID() string {
 	t := time.Now()
