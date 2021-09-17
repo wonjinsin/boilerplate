@@ -2,20 +2,21 @@ package repository
 
 import (
 	"context"
+	"encoding/json"
 	"pikachu/model"
 
 	"github.com/go-redis/redis/v8"
 )
 
 type redisUserRepository struct {
-	rclient  *redis.Client
+	client   *redis.Client
 	userRepo UserRepository
 }
 
 // NewRedisUserRepository ...
-func NewRedisUserRepository(rclient *redis.Client, userRepo UserRepository) UserRepository {
+func NewRedisUserRepository(client *redis.Client, userRepo UserRepository) UserRepository {
 	return &redisUserRepository{
-		rclient:  rclient,
+		client:   client,
 		userRepo: userRepo,
 	}
 }
@@ -27,7 +28,20 @@ func (r *redisUserRepository) NewUser(ctx context.Context, user *model.User) (ru
 
 // GetUser ...
 func (r *redisUserRepository) GetUser(ctx context.Context, uid string) (ruser *model.User, err error) {
-	return r.userRepo.GetUser(ctx, uid)
+	userJSON, err := r.client.Get(ctx, "dantats:user").Bytes()
+	err = json.Unmarshal(userJSON, &ruser)
+	if err == redis.Nil {
+		return r.userRepo.GetUser(ctx, uid)
+	} else if err != nil {
+		return nil, err
+	}
+
+	return ruser, nil
+}
+
+// GetUserByEmail ...
+func (r *redisUserRepository) GetUserByEmail(ctx context.Context, email string) (ruser *model.User, err error) {
+	return r.userRepo.GetUserByEmail(ctx, email)
 }
 
 // UpdateUser ...

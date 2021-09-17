@@ -119,10 +119,10 @@ func getConfig(pikachu *config.ViperConfig) (gConfig *gorm.Config) {
 
 // redisConnect ...
 func redisConnect(pikachu *config.ViperConfig) (redisDB *redis.Client, err error) {
-	hosts := pikachu.GetString("redis_host")
-	zlog.Infow("InitRedis", "redis_host", hosts)
+	host := fmt.Sprintf("%s:%d", pikachu.GetString("redis.host"), pikachu.GetInt("redis.port"))
+	zlog.Infow("InitRedis", "redis_host", host)
 	redisDB = redis.NewClient(&redis.Options{
-		Addr:     hosts,
+		Addr:     host,
 		Password: "",
 	})
 	if _, err := redisDB.Ping(context.Background()).Result(); err != nil {
@@ -135,6 +135,7 @@ func redisConnect(pikachu *config.ViperConfig) (redisDB *redis.Client, err error
 type UserRepository interface {
 	NewUser(ctx context.Context, user *model.User) (ruser *model.User, err error)
 	GetUser(ctx context.Context, uid string) (ruser *model.User, err error)
+	GetUserByEmail(ctx context.Context, email string) (ruser *model.User, err error)
 	UpdateUser(ctx context.Context, user *model.User) (ruser *model.User, err error)
 	DeleteUser(ctx context.Context, uid string) (err error)
 }

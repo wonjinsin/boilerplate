@@ -33,7 +33,7 @@ func (u *User) NewUser(c echo.Context) (err error) {
 	user := &model.User{}
 	if err := c.Bind(user); err != nil {
 		zlog.With(intCtx).Warnw("Bind error", "user", user, "err", err)
-		return response(c, http.StatusBadRequest, "Bind error")
+		return response(c, http.StatusBadRequest, err.Error())
 	} else if !user.ValidateNewUser() {
 		zlog.With(intCtx).Warnw("NewUser ValidateNewUser failed", "user", user)
 		return response(c, http.StatusBadRequest, "Validate failed")
@@ -41,7 +41,7 @@ func (u *User) NewUser(c echo.Context) (err error) {
 
 	if user, err = u.userSvc.NewUser(intCtx, user); err != nil {
 		zlog.With(intCtx).Errorw("UserSvc NewUser failed", "user", user, "err", err)
-		return response(c, http.StatusInternalServerError, "NewUser failed")
+		return response(c, http.StatusInternalServerError, err.Error())
 	}
 
 	return response(c, http.StatusOK, "New Deal OK", user)
@@ -63,7 +63,7 @@ func (u *User) GetUser(c echo.Context) (err error) {
 	user := &model.User{}
 	if user, err = u.userSvc.GetUser(intCtx, uid); err != nil {
 		zlog.With(intCtx).Warnw("UserSvc GetUser failed", "uid", uid, "err", err)
-		return response(c, http.StatusInternalServerError, "GetUser failed")
+		return response(c, http.StatusInternalServerError, err.Error())
 	}
 
 	return response(c, http.StatusOK, "GetUser OK", user)
@@ -89,7 +89,7 @@ func (u *User) UpdateUser(c echo.Context) (err error) {
 	}
 	if user, err = u.userSvc.UpdateUser(intCtx, uid, user); err != nil {
 		zlog.With(intCtx).Errorw("UserSvc NewUser failed", "uid", uid, "user", user, "err", err)
-		return response(c, http.StatusInternalServerError, "UpdateUser failed")
+		return response(c, http.StatusInternalServerError, err.Error())
 	}
 
 	return response(c, http.StatusOK, "Update Deal OK", user)
@@ -110,7 +110,7 @@ func (u *User) DeleteUser(c echo.Context) (err error) {
 
 	if err = u.userSvc.DeleteUser(intCtx, uid); err != nil {
 		zlog.With(intCtx).Errorw("UserSvc DeleteUser failed", "uid", uid, "err", err)
-		return response(c, http.StatusInternalServerError, "DeleteUser failed")
+		return response(c, http.StatusInternalServerError, err.Error())
 	}
 
 	return response(c, http.StatusOK, "Delete User OK")

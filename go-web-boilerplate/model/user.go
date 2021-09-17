@@ -1,9 +1,5 @@
 package model
 
-import (
-	"github.com/google/uuid"
-)
-
 // User ...
 type User struct {
 	UID   string `json:"uid" gorm:"primaryKey"`
@@ -13,11 +9,7 @@ type User struct {
 
 // ValidateNewUser ...
 func (u *User) ValidateNewUser() bool {
-	if _, err := uuid.Parse(u.UID); err != nil {
-		return false
-	}
-
-	return true
+	return u.Email != "" && u.Nick != ""
 }
 
 // ValidateUpdateUser ...

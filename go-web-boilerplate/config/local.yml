@@ -1,4 +1,4 @@
-project_name: pikachu
+projectName: pikachu
 env: local
 
 database:
@@ -8,3 +8,7 @@ database:
   dbname: pikachu
   username: root
   password: mysqlvotmdnjem
+
+redis:
+  host: 127.0.0.1
+  port: 56379
