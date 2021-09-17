@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/http"
 	"pikachu/model"
-	"pikachu/repository"
 	"pikachu/service"
 	"pikachu/util"
 
@@ -14,15 +13,13 @@ import (
 
 // User ...
 type User struct {
-	userSvc  service.UserService
-	userRepo repository.UserRepository
+	userSvc service.UserService
 }
 
 // NewUserController ...
-func NewUserController(userSvc service.UserService, userRepo repository.UserRepository) UserController {
+func NewUserController(userSvc service.UserService) UserController {
 	return &User{
-		userSvc:  userSvc,
-		userRepo: userRepo,
+		userSvc: userSvc,
 	}
 }
 

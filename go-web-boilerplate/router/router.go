@@ -16,7 +16,7 @@ func Init(e *echo.Echo, svc *service.Service, repo *repository.Repository) {
 
 	// User Controller
 	user := ver.Group("/user")
-	userCt := ct.NewUserController(svc.User, repo.User)
+	userCt := ct.NewUserController(svc.User)
 	user.POST("", userCt.NewUser)
 	user.GET("/:uid", userCt.GetUser)
 	user.PUT("/:uid", userCt.UpdateUser)

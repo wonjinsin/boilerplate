@@ -27,8 +27,8 @@ type Service struct {
 }
 
 // Init ...
-func Init(repo *repository.Repository) (*Service, error) {
-	userSvc := NewUserService(repo.User)
+func Init(redis *repository.RedisRepository) (*Service, error) {
+	userSvc := NewUserService(redis.User)
 	return &Service{User: userSvc}, nil
 }
 

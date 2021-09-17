@@ -11,6 +11,7 @@ import (
 	"pikachu/model"
 	"pikachu/util"
 
+	"github.com/go-redis/redis/v8"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -62,16 +63,28 @@ type Repository struct {
 	User UserRepository
 }
 
+// RedisRepository ...
+type RedisRepository struct {
+	User UserRepository
+}
+
 // Init ...
-func Init(pikachu *config.ViperConfig) (*Repository, error) {
+func Init(pikachu *config.ViperConfig) (*Repository, *RedisRepository, error) {
 	mysqlConn, err := mysqlConnect(pikachu)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
+	}
+
+	redisConn, err := redisConnect(pikachu)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	userRepo := NewGormUserRepository(mysqlConn)
 
-	return &Repository{User: userRepo}, nil
+	redisUserRepo := NewRedisUserRepository(redisConn, userRepo)
+
+	return &Repository{User: userRepo}, &RedisRepository{User: redisUserRepo}, nil
 }
 
 func mysqlConnect(pikachu *config.ViperConfig) (mysql *gorm.DB, err error) {
@@ -102,6 +115,20 @@ func getConfig(pikachu *config.ViperConfig) (gConfig *gorm.Config) {
 	}
 
 	return gConfig
+}
+
+// redisConnect ...
+func redisConnect(pikachu *config.ViperConfig) (redisDB *redis.Client, err error) {
+	hosts := pikachu.GetString("redis_host")
+	zlog.Infow("InitRedis", "redis_host", hosts)
+	redisDB = redis.NewClient(&redis.Options{
+		Addr:     hosts,
+		Password: "",
+	})
+	if _, err := redisDB.Ping(context.Background()).Result(); err != nil {
+		return nil, err
+	}
+	return redisDB, nil
 }
 
 // UserRepository ...

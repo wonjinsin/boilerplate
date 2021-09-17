@@ -36,13 +36,13 @@ func main() {
 	e.Use(middleware.RequestLogger(zlog))
 	e.HideBanner = true
 
-	repo, err := repository.Init(pikachu)
+	repo, redis, err := repository.Init(pikachu)
 	if err != nil {
 		fmt.Printf("Error when Start repository: %v\n", err)
 		os.Exit(1)
 	}
 
-	svc, err := service.Init(repo)
+	svc, err := service.Init(redis)
 	if err != nil {
 		fmt.Printf("Error when Start service: %v\n", err)
 		os.Exit(1)
