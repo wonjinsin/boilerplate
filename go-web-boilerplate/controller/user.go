@@ -110,7 +110,7 @@ func (u *User) DeleteUser(c echo.Context) (err error) {
 
 	if err = u.userSvc.DeleteUser(intCtx, uid); err != nil {
 		zlog.With(intCtx).Errorw("UserSvc DeleteUser failed", "uid", uid, "err", err)
-		return response(c, http.StatusInternalServerError, err.Error())
+		return response(c, http.StatusInternalServerError, "DeleteUser failed")
 	}
 
 	return response(c, http.StatusOK, "Delete User OK")

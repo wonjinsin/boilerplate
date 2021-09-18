@@ -27,11 +27,11 @@ func NewGormUserRepository(conn *gorm.DB) UserRepository {
 
 // NewUser ...
 func (g *gormUserRepository) NewUser(ctx context.Context, user *model.User) (ruser *model.User, err error) {
-	zlog.With(ctx).Infow("Repository NewUser", "user", user)
+	zlog.With(ctx).Infow("[New Repository Request]", "user", user)
 
 	scope := g.conn.WithContext(ctx)
 	if err = scope.Create(&user).Error; err != nil {
-		zlog.With(ctx).Errorw("Create User", "err", err)
+		zlog.With(ctx).Errorw("NewUser Error", "err", err)
 		return nil, err
 	}
 
@@ -40,15 +40,16 @@ func (g *gormUserRepository) NewUser(ctx context.Context, user *model.User) (rus
 
 // GetUser ...
 func (g *gormUserRepository) GetUser(ctx context.Context, uid string) (ruser *model.User, err error) {
-	zlog.With(ctx).Infow("[New Repository Service]", "uid", uid)
+	zlog.With(ctx).Infow("[New Repository Request]", "uid", uid)
 
 	scope := g.conn.WithContext(ctx)
 	scope = scope.Where("users.uid = ?", uid).Find(&ruser)
 	if err = scope.Error; err != nil {
-		zlog.With(ctx).Errorw("Find User", "uid", uid, "err", err)
+		zlog.With(ctx).Errorw("GetUser Error", "uid", uid, "err", err)
 		return nil, err
 	}
 	if scope.RowsAffected == 0 {
+		zlog.With(ctx).Errorw("GetUser Not Found", "uid", uid, "err", err)
 		return nil, errors.UserNotFoundf("User is not exist")
 	}
 
@@ -57,15 +58,16 @@ func (g *gormUserRepository) GetUser(ctx context.Context, uid string) (ruser *mo
 
 // GetUserByEmail ...
 func (g *gormUserRepository) GetUserByEmail(ctx context.Context, email string) (ruser *model.User, err error) {
-	zlog.With(ctx).Infow("[New Repository Service]", "email", email)
+	zlog.With(ctx).Infow("[New Repository Request]", "email", email)
 
 	scope := g.conn.WithContext(ctx)
 	scope = scope.Where("users.email = ?", email).Find(&ruser)
 	if err = scope.Error; err != nil {
-		zlog.With(ctx).Errorw("Find User", "email", email, "err", err)
+		zlog.With(ctx).Errorw("GetUserByEmail Error", "email", email, "err", err)
 		return nil, err
 	}
 	if scope.RowsAffected == 0 {
+		zlog.With(ctx).Errorw("GetUserByEmail Not Found", "email", email, "err", err)
 		return nil, errors.UserNotFoundf("User is not exist")
 	}
 
@@ -78,7 +80,7 @@ func (g *gormUserRepository) UpdateUser(ctx context.Context, user *model.User) (
 
 	scope := g.conn.WithContext(ctx)
 	if err = scope.Updates(user).Error; err != nil {
-		zlog.With(ctx).Errorw("Update User Failed", "user", user, "err", err)
+		zlog.With(ctx).Errorw("UpdateUser Error", "user", user, "err", err)
 		return nil, err
 	}
 
@@ -87,11 +89,11 @@ func (g *gormUserRepository) UpdateUser(ctx context.Context, user *model.User) (
 
 // DeleteUser ...
 func (g *gormUserRepository) DeleteUser(ctx context.Context, uid string) (err error) {
-	zlog.With(ctx).Infow("[New Repository Service]", "uid", uid)
+	zlog.With(ctx).Infow("[New Repository Request]", "uid", uid)
 
 	scope := g.conn.WithContext(ctx)
 	if err = scope.Where("uid = ?", uid).Delete(&model.User{}).Error; err != nil {
-		zlog.With(ctx).Errorw("Delete User Failed", "uid", uid, "err", err)
+		zlog.With(ctx).Errorw("DeleteUser Error", "uid", uid, "err", err)
 		return err
 	}
 

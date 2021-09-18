@@ -18,6 +18,7 @@ import (
 )
 
 var zlog *util.Logger
+var redisPrefix string
 
 type dbLogger struct {
 	*util.Logger
@@ -75,6 +76,7 @@ func Init(pikachu *config.ViperConfig) (*Repository, *RedisRepository, error) {
 		return nil, nil, err
 	}
 
+	redisPrefix = pikachu.GetString("projectName")
 	redisConn, err := redisConnect(pikachu)
 	if err != nil {
 		return nil, nil, err

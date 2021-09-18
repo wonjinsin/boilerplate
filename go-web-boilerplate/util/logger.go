@@ -43,6 +43,7 @@ func NewLogger() (*Logger, error) {
 		  "nameKey": "trid",
 		  "messageKey": "msg",
 		  "callerKey": "caller",
+		  "functionKey": "func",
 		  "callerEncoder": "short"
 		}
 	  }`)
