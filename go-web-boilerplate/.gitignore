@@ -21,7 +21,7 @@
 ### Go Patch ###
 /vendor/
 /Godeps/
-
+/mock/
 # End of https://www.toptal.com/developers/gitignore/api/go
 
 bin
