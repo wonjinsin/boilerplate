@@ -75,7 +75,7 @@ func (u *userUsecase) UpdateUser(ctx context.Context, uid string, user *model.Us
 	}
 
 	ruser.UpdateUser(user)
-	return u.userRepo.UpdateUser(ctx, user)
+	return u.userRepo.UpdateUser(ctx, ruser)
 }
 
 // DeleteUser ...

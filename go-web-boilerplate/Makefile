@@ -14,7 +14,8 @@ endif
 build:
 	GOOS=$(OS) go build -o $(BINARY_NAME) $(MAIN)
 
-test-all:
+.PHONY: test
+test:
 	go test -v ./...
 
 build-mocks:
