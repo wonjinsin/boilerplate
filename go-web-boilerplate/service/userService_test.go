@@ -211,4 +211,30 @@ var _ = Describe("userService Test", func() {
 		})
 	})
 
+	Describe("DeleteUser", func() {
+		var (
+			uid string
+
+			expectedError error
+			returnedError error
+		)
+		BeforeEach(func() {
+			uid = uuid.New().String()
+			expectedError = nil
+		})
+		JustBeforeEach(func() {
+			muRepo.EXPECT().
+				DeleteUser(gomock.Any(), gomock.Eq(uid)).
+				Return(expectedError).AnyTimes()
+
+			returnedError = userService.DeleteUser(ctx, uid)
+		})
+		Context("normal", func() {
+			It("should not error", func() {
+				Expect(returnedError).NotTo(HaveOccurred())
+			})
+		})
+
+	})
+
 })
